@@ -25,18 +25,21 @@ class Interface:
 
         self.__configurations = config.Config()
 
-    def __get_arguments(self, connector: boto3.session.Session) -> dict:
+    @staticmethod
+    def __get_elements(connector: boto3.session.Session, key_name: str) -> dict:
         """
 
+        :param connector: A boto3 session instance, it retrieves the developer's <default> Amazon
+                          Web Services (AWS) profile details, which allows for programmatic interaction with AWS.
+        :param key_name: Of a configurations file
         :return:
         """
-
-        key_name = self.__configurations.argument_key
 
         return src.s3.configurations.Configurations(
             connector=connector).objects(key_name=key_name)
 
-    def exc(self) -> typing.Tuple[boto3.session.Session, s3p.S3Parameters, sr.Service, dict]:
+
+    def exc(self) -> typing.Tuple[boto3.session.Session, s3p.S3Parameters, sr.Service, dict, dict]:
         """
 
         :return:
@@ -44,8 +47,9 @@ class Interface:
 
         connector = boto3.session.Session()
 
-        # Arguments
-        arguments: dict = self.__get_arguments(connector=connector)
+        # Arguments, Settings
+        arguments: dict = self.__get_elements(connector=connector, key_name=self.__configurations.argument_key)
+        settings: dict = self.__get_elements(connector=connector, key_name=self.__configurations.settings_key)
 
         # Interaction Instances: Amazon
         s3_parameters: s3p.S3Parameters = src.s3.s3_parameters.S3Parameters(connector=connector).exc()
@@ -54,4 +58,4 @@ class Interface:
 
         src.preface.setup.Setup().exc()
 
-        return connector, s3_parameters, service, arguments
+        return connector, s3_parameters, service, arguments, settings
