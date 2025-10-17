@@ -35,6 +35,8 @@ class Cluster:
         except self.__ecs_client.exceptions.ClientException as err:
             raise err from err
 
+        self.__logger.info(response)
+
         return response
 
     def create_cluster(self, definitions: dict):
@@ -46,7 +48,7 @@ class Cluster:
 
         response = self.__inspect(definitions=definitions)
 
-        if not response['failures']:
+        if (len(response['clusters']) > 0) & (response['clusters'][0]['status'] == 'ACTIVE'):
             self.__logger.info('%s exists.', definitions.get('clusterName'))
             return None
 
@@ -65,7 +67,7 @@ class Cluster:
 
         response = self.__inspect(definitions=definitions)
 
-        if response['failures']:
+        if not response['clusters']:
             self.__logger.info('%s does not exist.', definitions.get('clusterName'))
             return None
 
