@@ -4,6 +4,8 @@ import logging
 import boto3
 import botocore.exceptions
 
+import src.ecs.register
+
 
 class Task:
     """
@@ -18,6 +20,9 @@ class Task:
         """
 
         self.__ecs_client = connector.client(service_name='ecs')
+
+        # An instance for registering
+        self.__register = src.ecs.register.Register(connector=connector)
 
         # Logging
         logging.basicConfig(level=logging.INFO, format='\n\n%(message)s\n%(asctime)s.%(msecs)03d\n',
@@ -82,3 +87,12 @@ class Task:
                 taskDefinition=element
             )
             self.__delete_task_definitions(element=message['taskDefinition']['taskDefinitionArn'])
+
+    def register_task_definition(self, definitions: dict):
+        """
+
+        :param definitions:
+        :return:
+        """
+
+        self.__register.exc(definitions=definitions)
