@@ -2,13 +2,15 @@
 import logging
 
 import boto3
-import botocore.exceptions
 
 import config
 import src.functions.secret
 
 
 class Register:
+    """
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ecs/client/register_task_definition.html
+    """
 
     def __init__(self, connector: boto3.session.Session):
         """
@@ -28,14 +30,21 @@ class Register:
         self.__logger = logging.getLogger(__name__)
 
     def exc(self, definitions: dict):
+        """
 
+        :param definitions:
+        :return:
+        """
+
+        self.__logger.info(definitions.get('family'))
+
+        '''
         try:
             self.__ecs_client.register_task_definition(
                 family=definitions.get('family'),
                 taskRoleArn=self.__secret.exc(secret_id=self.__configurations.project_key_name, node=''),
                 executionRoleArn=self.__secret.exc(secret_id=self.__configurations.project_key_name, node='')
-
-
             )
         except botocore.exceptions.ClientError as err:
             raise err from err
+        '''
