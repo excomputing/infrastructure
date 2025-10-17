@@ -43,5 +43,9 @@ class Task:
 
         response = self.__inspect(definitions=definitions)
 
+        # `response` will be empty if an active task definition is not found
         if not response:
             self.__logger.info('deregister applicable: false')
+
+    def delete_task_definitions(self):
+        pass
