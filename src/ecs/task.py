@@ -24,7 +24,7 @@ class Task:
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
-    def __inspect(self, definitions: dict):
+    def __inspect(self, definitions: dict) -> list:
         """
         response = self.__ecs_client.describe_task_definition(
                 taskDefinition=definitions.get('family')
@@ -38,17 +38,12 @@ class Task:
         for status in ['ACTIVE', 'INACTIVE']:
             try:
                 response = self.__ecs_client.list_task_definitions(
-                    familyPrefix=definitions.get('family'),
-                    status=status
-                )
-                self.__logger.info(response)
+                    familyPrefix=definitions.get('family'), status=status)
                 elements.append(response['taskDefinitionArns'])
             except self.__ecs_client.exceptions.ClientException:
                 self.__logger.info('%s does not exist.', definitions.get('family'))
             except botocore.exceptions.ClientError as err:
                 raise err from err
-
-        self.__logger.info('LENGTH: %s', len(elements))
 
         return sum(elements, [])
 
@@ -56,12 +51,12 @@ class Task:
 
         definitions['family'] = 'FewTokens'
 
-        response = self.__inspect(definitions=definitions)
-        self.__logger.info(response)
+        elements = self.__inspect(definitions=definitions)
 
-        # `response` will be empty if an active task definition is not found
-        if not response:
+        # `elements` is empty, there are no tasks to deregister
+        if not elements:
             self.__logger.info('deregister applicable: false')
+            return None
 
     def __delete_task_definitions(self):
         pass
