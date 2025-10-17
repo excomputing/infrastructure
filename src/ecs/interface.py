@@ -2,6 +2,7 @@
 import boto3
 
 import src.ecs.cluster
+import src.ecs.task
 import src.ecs.watch
 import src.elements.s3_parameters as s3p
 
@@ -45,3 +46,10 @@ class Interface:
             definitions = watch
             definitions['tags']['awslogs-region'] = self.__s3_parameters.region_name
             __watch.create_log_group(definitions=definitions)
+
+        # Tasks
+        __task = src.ecs.task.Task(connector=self.__connector)
+        for task in self.__settings.get('tasks'):
+            definitions = task
+            definitions['logConfiguration']['options']['awslogs-region'] = self.__s3_parameters.region_name
+            __task.register_task_definition(definitions=definitions)
