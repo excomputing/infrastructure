@@ -26,9 +26,6 @@ class Task:
 
     def __inspect(self, definitions: dict) -> list:
         """
-        response = self.__ecs_client.describe_task_definition(
-                taskDefinition=definitions.get('family')
-            )
 
         :param definitions:
         :return:
@@ -48,6 +45,11 @@ class Task:
         return sum(elements, [])
 
     def __delete_task_definitions(self, element: str):
+        """
+
+        :param element:
+        :return:
+        """
 
         try:
             message = self.__ecs_client.delete_task_definitions(
@@ -61,6 +63,11 @@ class Task:
 
 
     def deregister_task_definition(self, definitions: dict):
+        """
+        
+        :param definitions:
+        :return:
+        """
 
         elements = self.__inspect(definitions=definitions)
 
