@@ -206,5 +206,5 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# Exclude Amazon Web Services CLI (Command Line Interface) JSON data
+# Exclude Amazon Web Services CLI (Command Line Interface) JSON (JavaScript Object Notation) data
 interface/**/*.json
