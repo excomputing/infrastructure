@@ -61,10 +61,9 @@ class Task:
         except botocore.exceptions.ClientError as err:
             raise err from err
 
-
     def deregister_task_definition(self, definitions: dict):
         """
-        
+
         :param definitions:
         :return:
         """
