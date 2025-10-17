@@ -24,28 +24,44 @@ class Task:
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
-    def __inspect(self, definitions: dict) -> dict:
-
-
-        try:
-            response = self.__ecs_client.describe_task_definition(
+    def __inspect(self, definitions: dict):
+        """
+        response = self.__ecs_client.describe_task_definition(
                 taskDefinition=definitions.get('family')
             )
-        except self.__ecs_client.exceptions.ClientException:
-            self.__logger.info('%s does not exist.', definitions.get('family'))
-            return {}
-        except botocore.exceptions.ClientError as err:
-            raise err from err
 
-        return response
+        :param definitions:
+        :return:
+        """
+
+        elements = []
+        for status in ['ACTIVE', 'INACTIVE']:
+            try:
+                response = self.__ecs_client.list_task_definitions(
+                    familyPrefix=definitions.get('family'),
+                    status=status
+                )
+                self.__logger.info(response)
+                elements.append(response['taskDefinitionArns'])
+            except self.__ecs_client.exceptions.ClientException:
+                self.__logger.info('%s does not exist.', definitions.get('family'))
+            except botocore.exceptions.ClientError as err:
+                raise err from err
+
+        self.__logger.info('LENGTH: %s', len(elements))
+
+        return sum(elements, [])
 
     def deregister_task_definition(self, definitions: dict):
 
+        definitions['family'] = 'FewTokens'
+
         response = self.__inspect(definitions=definitions)
+        self.__logger.info(response)
 
         # `response` will be empty if an active task definition is not found
         if not response:
             self.__logger.info('deregister applicable: false')
 
-    def delete_task_definitions(self):
+    def __delete_task_definitions(self):
         pass
