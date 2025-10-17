@@ -2,6 +2,7 @@
 import logging
 
 import boto3
+import botocore.exceptions
 
 
 class Task:
@@ -22,3 +23,25 @@ class Task:
         logging.basicConfig(level=logging.INFO, format='\n\n%(message)s\n%(asctime)s.%(msecs)03d\n',
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
+
+    def __inspect(self, definitions: dict) -> dict:
+
+
+        try:
+            response = self.__ecs_client.describe_task_definition(
+                taskDefinition=definitions.get('family')
+            )
+        except self.__ecs_client.exceptions.ClientException:
+            self.__logger.info('%s does not exist.', definitions.get('family'))
+            return {}
+        except botocore.exceptions.ClientError as err:
+            raise err from err
+
+        return response
+
+    def deregister_task_definition(self, definitions: dict):
+
+        response = self.__inspect(definitions=definitions)
+
+        if not response:
+            self.__logger.info('deregister applicable: false')
