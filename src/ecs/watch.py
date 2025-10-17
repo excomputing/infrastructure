@@ -46,7 +46,7 @@ class Watch:
 
         response = self.__inspect(definitions=definitions)
 
-        if response:
+        if response['logGroups']:
             self.__logger.info(f'Cloud Watch Log Groups: {definitions.get('logGroupName')} exists')
             return None
 
@@ -68,7 +68,7 @@ class Watch:
 
         response = self.__inspect(definitions=definitions)
 
-        if not response:
+        if not response['logGroups']:
             self.__logger.info('Cloud Watch Log Groups: %s does not exist.', definitions.get('logGroupName'))
             return None
 
