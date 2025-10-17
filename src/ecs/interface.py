@@ -4,7 +4,6 @@ import boto3
 import src.ecs.cluster
 import src.ecs.watch
 import src.elements.s3_parameters as s3p
-import src.settings
 
 
 class Interface:
