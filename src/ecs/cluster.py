@@ -37,6 +37,18 @@ class Cluster:
 
         return response
 
+    def __create(self, definitions: dict):
+        """
+
+        :param definitions:
+        :return:
+        """
+
+        message = self.__ecs_client.create_cluster(
+            clusterName = definitions.get('clusterName'),
+            tags=definitions.get('tags')            )
+        self.__logger.info('Created Cluster: %s', message['cluster']['clusterName'])
+
     def create_cluster(self, definitions: dict):
         """
 
@@ -46,15 +58,17 @@ class Cluster:
 
         response = self.__inspect(definitions=definitions)
 
-        if (len(response['clusters']) > 0) & (response['clusters'][0]['status'] == 'ACTIVE'):
-            self.__logger.info('%s exists.', definitions.get('clusterName'))
+        if not response['clusters']:
+            self.__create(definitions=definitions)
             return None
 
-        message = self.__ecs_client.create_cluster(
-            clusterName = definitions.get('clusterName'),
-            tags=definitions.get('tags')
-        )
-        self.__logger.info('Created Cluster: %s', message['cluster']['clusterName'])
+        if (response['clusters']) & (response['clusters'][0]['status'] == 'INACTIVE'):
+            self.__create(definitions=definitions)
+            return None
+
+        if (response['clusters']) & (response['clusters'][0]['status'] == 'ACTIVE'):
+            self.__logger.info('%s exists.', definitions.get('clusterName'))
+            return None
 
     def delete_cluster(self, definitions: dict):
         """
