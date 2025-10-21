@@ -1,12 +1,9 @@
-
-import logging
-
 import boto3
 import botocore.exceptions
 
 import config
-import src.functions.secret
 import src.elements.s3_parameters as s3p
+import src.functions.secret
 
 
 class Register:
