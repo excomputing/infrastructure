@@ -17,11 +17,12 @@ def main():
     logger: logging.Logger = logging.getLogger(__name__)
     logger.info('Starting: %s', datetime.datetime.now().isoformat(timespec='microseconds'))
 
-    # Elastic Container Service Clusters
-    __cluster = src.ecs.cluster.Cluster(connector=connector)
-    for cluster in settings.get('clusters'):
-        definitions = cluster
-        __cluster.delete_cluster(definitions=definitions)
+
+    # Elastic Container Service Tasks
+    __task = src.ecs.task.Task(connector=connector, s3_parameters=s3_parameters)
+    for task in settings.get('tasks'):
+        definitions = task
+        __task.deregister_task_definition(definitions=definitions)
 
     # Cloud Watch Log Groups
     __watch = src.ecs.watch.Watch(connector=connector)
@@ -29,6 +30,12 @@ def main():
         definitions = watch
         definitions['tags']['awslogs-region'] = s3_parameters.region_name
         __watch.delete_log_group(definitions=definitions)
+
+    # Elastic Container Service Clusters
+    __cluster = src.ecs.cluster.Cluster(connector=connector)
+    for cluster in settings.get('clusters'):
+        definitions = cluster
+        __cluster.delete_cluster(definitions=definitions)
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
@@ -49,6 +56,7 @@ if __name__ == '__main__':
 
     # Modules
     import src.ecs.cluster
+    import src.ecs.task
     import src.ecs.watch
     import src.elements.service as sr
     import src.elements.s3_parameters as s3p
