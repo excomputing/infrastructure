@@ -25,7 +25,13 @@ class Watch:
         self.__logger = logging.getLogger(__name__)
 
     def __inspect(self, definitions: dict) -> dict:
+        """
 
+        :param definitions:
+        :return:
+        """
+
+        # Does the log group exist?
         try:
             response = self.__logs_client.describe_log_groups(
                 logGroupNamePattern=definitions.get('logGroupName'),
@@ -42,12 +48,15 @@ class Watch:
         :return:
         """
 
+        # Determine whether the log group exists
         response = self.__inspect(definitions=definitions)
 
+        # If it does
         if response['logGroups']:
             self.__logger.info(f'Cloud Watch Log Groups: {definitions.get('logGroupName')} exists')
             return None
 
+        # Otherwise
         try:
             self.__logs_client.create_log_group(
                 logGroupName=definitions.get('logGroupName'),
@@ -64,18 +73,21 @@ class Watch:
         :return:
         """
 
+        # Determine whether the log group exists
         response = self.__inspect(definitions=definitions)
 
+        # If it does not
         if not response['logGroups']:
             self.__logger.info('Cloud Watch Log Groups: %s does not exist.', definitions.get('logGroupName'))
             return None
 
+        # Otherwise
         try:
             message = self.__logs_client.delete_log_group(
                 logGroupName=definitions.get('logGroupName')
             )
             if message:
-                self.__logger.info('Deleted log group %s', message['logGroups']['logGroupName'])
+                self.__logger.info('Log Group Deletion Status Code: %s', message['ResponseMetadata']['HTTPStatusCode'])
         except self.__logs_client.exceptions.ResourceNotFoundException:
             self.__logger.info('Cloud Watch Log Groups: %s does not exist.',
                                definitions.get('logGroupName'))
