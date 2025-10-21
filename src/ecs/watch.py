@@ -33,8 +33,6 @@ class Watch:
         except botocore.exceptions.ClientError as err:
             raise err from err
 
-        self.__logger.info(response)
-
         return response
 
     def create_log_group(self, definitions: dict):
