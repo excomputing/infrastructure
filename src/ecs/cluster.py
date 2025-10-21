@@ -54,7 +54,7 @@ class Cluster:
             clusterName = definitions.get('clusterName'),
             tags=definitions.get('tags')
         )
-        self.__logger.info(message)
+        self.__logger.info('Created Cluster: %s', message['cluster']['clusterName'])
 
     def delete_cluster(self, definitions: dict):
         """
@@ -72,4 +72,4 @@ class Cluster:
         message = self.__ecs_client.delete_cluster(
             cluster=definitions.get('clusterName')
         )
-        self.__logger.info(message)
+        self.__logger.info('Deleted Cluster: %s', message['cluster']['clusterName'])
