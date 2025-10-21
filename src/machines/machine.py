@@ -10,7 +10,7 @@ class Machine:
                           Web Services (AWS) profile details, which allows for programmatic interaction with AWS.
         """
 
-        self.__ecs_client = connector.client(service_name='stepfunctions')
+        self.__sfn_client = connector.client(service_name='stepfunctions')
 
     def describe_state_machine(self, machine: dict):
         pass
