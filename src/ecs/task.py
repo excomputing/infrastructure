@@ -5,6 +5,7 @@ import boto3
 import botocore.exceptions
 
 import src.ecs.register
+import src.elements.s3_parameters as s3p
 
 
 class Task:
@@ -12,17 +13,19 @@ class Task:
     https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ecs.html
     """
 
-    def __init__(self, connector: boto3.session.Session):
+    def __init__(self, connector: boto3.session.Session, s3_parameters: s3p.S3Parameters):
         """
 
         :param connector: A boto3 session instance, it retrieves the developer's <default> Amazon
                           Web Services (AWS) profile details, which allows for programmatic interaction with AWS.
+        :param s3_parameters: The overarching S3 parameters settings of this project, e.g., region code
+                              name, buckets, etc.
         """
 
         self.__ecs_client = connector.client(service_name='ecs')
 
         # An instance for registering
-        self.__register = src.ecs.register.Register(connector=connector)
+        self.__register = src.ecs.register.Register(connector=connector, s3_parameters=s3_parameters)
 
         # Logging
         logging.basicConfig(level=logging.INFO, format='\n\n%(message)s\n%(asctime)s.%(msecs)03d\n',
