@@ -42,7 +42,7 @@ class Interface:
         secret = src.functions.secret.Secret(connector=self.__connector)
         return secret.exc(secret_id=self.__arguments.get('project_key_name'))
 
-    def __states_computing(self, definition: dict):
+    def __states_computing(self, definition: dict) -> dict:
         """
 
         :param definition:
@@ -50,21 +50,36 @@ class Interface:
         """
 
         states: dict = definition.get('States')
-        keys = [state for state in list(states.keys()) if not state.lower().__contains__('notify')]
-        logging.info(keys)
+        keys: list[str] = [state for state in list(states.keys()) if not state.lower().__contains__('notify')]
 
+        # Setting terms
         for key in keys:
             definition['States'][key]['Parameters']['NetworkConfiguration']['AwsvpcConfiguration']['Subnets'] = (
                 self.__secrets.get('subnets'))
             definition['States'][key]['Parameters']['NetworkConfiguration']['AwsvpcConfiguration']['SecurityGroups'] = (
                 self.__secrets.get('security-groups'))
-            definition['States'][key]['Parameters']['Clusters'] = (
-                    self.__secrets.get('ecs-endpoint') + definition['States'][key]['Parameters']['Clusters'])
+            definition['States'][key]['Parameters']['Cluster'] = (
+                    self.__secrets.get('ecs-endpoint') + definition['States'][key]['Parameters']['Cluster'])
             definition['States'][key]['Parameters']['TaskDefinition'] = (
                     self.__secrets.get('ecs-endpoint') + definition['States'][key]['Parameters']['TaskDefinition'])
 
-    def __states_messaging(self):
-        pass
+        return definition
+
+    def __states_messaging(self, definition: dict) -> dict:
+        """
+
+        :param definition:
+        :return:
+        """
+
+        states: dict = definition.get('States')
+        keys: list[str] = [state for state in list(states.keys()) if state.lower().__contains__('notify')]
+
+        # Setting terms
+        for key in keys:
+            definition['States'][key]['Parameters']['TopicArn'] = self.__secrets.get('topic-arn')
+
+        return definition
 
     def exc(self, settings: dict):
         """
@@ -76,12 +91,15 @@ class Interface:
         machine: dict
         for machine in settings.get('machines'):
 
+            # the machines definition
             definition: dict = self.__s3_configurations.objects(
                 key_name=f'{self.__arguments.get('machines_prefix')}{machine.get('name')}.json')
 
-            # the computing states
-            self.__states_computing(definition=definition)
+            # the computing states; set undefined terms
+            definition = self.__states_computing(definition=definition.copy())
 
-            # the messaging states
+            # the messaging states; set undefined terms
+            definition = self.__states_messaging(definition=definition.copy())
 
             # the machine
+            logging.info(definition)
