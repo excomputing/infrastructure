@@ -35,8 +35,6 @@ class Cluster:
         except self.__ecs_client.exceptions.ClientException as err:
             raise err from err
 
-        self.__logger.info(response)
-
         return response
 
     def create_cluster(self, definitions: dict):
