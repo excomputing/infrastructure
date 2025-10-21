@@ -71,9 +71,11 @@ class Watch:
             return None
 
         try:
-            self.__logs_client.delete_log_group(
+            message = self.__logs_client.delete_log_group(
                 logGroupName=definitions.get('logGroupName')
             )
+            if message:
+                self.__logger.info('Deleted log group %s', message['logGroups']['logGroupName'])
         except self.__logs_client.exceptions.ResourceNotFoundException:
             self.__logger.info('Cloud Watch Log Groups: %s does not exist.',
                                definitions.get('logGroupName'))
