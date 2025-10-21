@@ -76,5 +76,5 @@ class Register:
         except botocore.exceptions.ClientError as err:
             raise err from err
 
-        name = message['taskDefinition']['taskDefinitionArn'].rsplit(sep='/', maxsplit=1)[0]
+        name = message['taskDefinition']['taskDefinitionArn'].rsplit(sep='/', maxsplit=1)[1]
         logging.info('Created Task Definition: %s', name)
