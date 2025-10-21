@@ -21,14 +21,30 @@ class Register:
                               name, buckets, etc.
         """
 
-        self.__ecs_client = connector.client(service_name='ecs')
+        self.__connector = connector
+        self.__ecs_client = self.__connector.client(service_name='ecs')
         self.__s3_parameters = s3_parameters
 
         # Configurations
         self.__configurations = config.Config()
+        self.__project_key_name = self.__configurations.project_key_name
 
         # Secrets
-        self.__secret = src.functions.secret.Secret(connector=connector)
+        self.__ecr_endpoint, self.__task_role_arn, self.__execution_role_arn = self.__assets()
+
+    def __assets(self):
+        """
+
+        :return:
+        """
+
+        secret = src.functions.secret.Secret(connector=self.__connector)
+
+        ecr_endpoint: str = secret.exc(secret_id=self.__project_key_name, node='ecr-endpoint')
+        task_role_arn: str = secret.exc(secret_id=self.__project_key_name, node='ecs-role-arn-task')
+        execution_role_arn: str = secret.exc(secret_id=self.__project_key_name, node='ecs-role-arn-execution')
+
+        return ecr_endpoint, task_role_arn, execution_role_arn
 
     def exc(self, definitions: dict):
         """
@@ -38,15 +54,17 @@ class Register:
         """
 
         container_definitions: list[dict] = definitions.get('containerDefinitions')
+
         for c in container_definitions:
             c['logConfiguration']['options']['awslogs-region'] = self.__s3_parameters.region_name
+            c['image'] = self.__ecr_endpoint + c['image']
 
         # Hence
         try:
             self.__ecs_client.register_task_definition(
                 family=definitions.get('family'),
-                taskRoleArn=self.__secret.exc(secret_id=self.__configurations.project_key_name, node=''),
-                executionRoleArn=self.__secret.exc(secret_id=self.__configurations.project_key_name, node=''),
+                taskRoleArn=self.__task_role_arn,
+                executionRoleArn=self.__execution_role_arn,
                 networkMode=definitions.get('networkMode'),
                 containerDefinitions=container_definitions,
                 requiresCompatibilities=definitions.get('requiresCompatibilities'),
