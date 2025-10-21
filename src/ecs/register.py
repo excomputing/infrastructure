@@ -1,3 +1,4 @@
+"""Module register.py"""
 import boto3
 import botocore.exceptions
 
@@ -40,14 +41,17 @@ class Register:
         for c in container_definitions:
             c['logConfiguration']['options']['awslogs-region'] = self.__s3_parameters.region_name
 
-
+        # Hence
         try:
             self.__ecs_client.register_task_definition(
                 family=definitions.get('family'),
                 taskRoleArn=self.__secret.exc(secret_id=self.__configurations.project_key_name, node=''),
                 executionRoleArn=self.__secret.exc(secret_id=self.__configurations.project_key_name, node=''),
                 networkMode=definitions.get('networkMode'),
-                containerDefinitions=container_definitions
+                containerDefinitions=container_definitions,
+                requiresCompatibilities=definitions.get('requiresCompatibilities'),
+                cpu=definitions.get('cpu'),
+                memory=definitions.get('memory')
             )
         except botocore.exceptions.ClientError as err:
             raise err from err
