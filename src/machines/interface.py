@@ -1,15 +1,16 @@
 
-import boto3
 import logging
 
-import config
+import boto3
+
 import src.elements.s3_parameters as s3p
+import src.functions.secret
 import src.s3.configurations
 
 
 class Interface:
 
-    def __init__(self, connector: boto3.session.Session, s3_parameters: s3p.S3Parameters, arguments: dict, settings: dict):
+    def __init__(self, connector: boto3.session.Session, s3_parameters: s3p.S3Parameters, arguments: dict):
         """
 
         :param connector: A boto3 session instance, it retrieves the developer's <default> Amazon
@@ -17,33 +18,70 @@ class Interface:
         :param s3_parameters: The overarching S3 parameters settings of this project, e.g., region code
                               name, buckets, etc.
         :param arguments: A suite of values/arguments vis-à-vis particular to a project
-        :param settings: In relation to cloud compute
         """
 
         self.__connector = connector
         self.__s3_parameters = s3_parameters
         self.__arguments = arguments
-        self.__settings = settings
 
-        self.__machines_prefix = config.Config().machines_prefix
+        # An instance for reading S3 (Simple Storage Service) hosted based configurations
         self.__s3_configurations = src.s3.configurations.Configurations(connector=self.__connector)
 
-    def __definition(self, name: str):
+        # Secrets
+        self.__secrets = self.__get_secrets()
 
-        definition: dict = self.__s3_configurations.objects(key_name=f'{self.__machines_prefix}{name}.json')
+    def __get_secrets(self) -> dict:
+        """
+        ecs_endpoint = __secrets.get('ecs-endpoint')
+        sfn_role_arn = __secrets.get('sfn-role-arn')
+        topic_arn = __secrets.get('topic-arn')
+
+        :return:
+        """
+
+        secret = src.functions.secret.Secret(connector=self.__connector)
+        return secret.exc(secret_id=self.__arguments.get('project_key_name'))
+
+    def __states_computing(self, definition: dict):
+        """
+
+        :param definition:
+        :return:
+        """
 
         states: dict = definition.get('States')
-        __keys: list[str] = list(states)
-        keys = [state for state in __keys if not state.lower().__contains__('notify')]
+        keys = [state for state in list(states.keys()) if not state.lower().__contains__('notify')]
         logging.info(keys)
 
-    def exc(self):
+        for key in keys:
+            definition['States'][key]['Parameters']['NetworkConfiguration']['AwsvpcConfiguration']['Subnets'] = (
+                self.__secrets.get('subnets'))
+            definition['States'][key]['Parameters']['NetworkConfiguration']['AwsvpcConfiguration']['SecurityGroups'] = (
+                self.__secrets.get('security-groups'))
+            definition['States'][key]['Parameters']['Clusters'] = (
+                    self.__secrets.get('ecs-endpoint') + definition['States'][key]['Parameters']['Clusters'])
+            definition['States'][key]['Parameters']['TaskDefinition'] = (
+                    self.__secrets.get('ecs-endpoint') + definition['States'][key]['Parameters']['TaskDefinition'])
+
+    def __states_messaging(self):
+        pass
+
+    def exc(self, settings: dict):
+        """
+
+        :param settings: In relation to cloud compute
+        :return:
+        """
 
         machine: dict
-        for machine in self.__settings.get('machines'):
+        for machine in settings.get('machines'):
 
-            self.__definition(name=machine.get('name'))
+            definition: dict = self.__s3_configurations.objects(
+                key_name=f'{self.__arguments.get('machines_prefix')}{machine.get('name')}.json')
 
+            # the computing states
+            self.__states_computing(definition=definition)
 
+            # the messaging states
 
-
+            # the machine
