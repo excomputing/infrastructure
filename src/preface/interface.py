@@ -38,7 +38,6 @@ class Interface:
         return src.s3.configurations.Configurations(
             connector=connector).objects(key_name=key_name)
 
-
     def exc(self) -> typing.Tuple[boto3.session.Session, s3p.S3Parameters, sr.Service, dict, dict]:
         """
 
