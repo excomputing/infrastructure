@@ -1,7 +1,7 @@
 import boto3
 
 
-class Craft:
+class Machine:
 
     def __init__(self, connector: boto3.session.Session):
         """
