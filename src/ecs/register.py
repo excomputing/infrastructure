@@ -44,7 +44,9 @@ class Register:
             self.__ecs_client.register_task_definition(
                 family=definitions.get('family'),
                 taskRoleArn=self.__secret.exc(secret_id=self.__configurations.project_key_name, node=''),
-                executionRoleArn=self.__secret.exc(secret_id=self.__configurations.project_key_name, node='')
+                executionRoleArn=self.__secret.exc(secret_id=self.__configurations.project_key_name, node=''),
+                networkMode=definitions.get('networkMode'),
+                containerDefinitions=[]
             )
         except botocore.exceptions.ClientError as err:
             raise err from err
