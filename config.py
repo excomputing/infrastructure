@@ -27,3 +27,4 @@ class Config:
         self.s3_parameters_key = 's3_parameters.yaml'
         self.argument_key = 'infrastructure/arguments.json'
         self.settings_key = 'infrastructure/assets/settings.json'
+        self.machines_prefix = 'infrastructure/machines/'
