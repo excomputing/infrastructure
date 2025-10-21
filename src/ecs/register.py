@@ -1,4 +1,5 @@
 """Module register.py"""
+import logging
 import boto3
 import botocore.exceptions
 
@@ -61,7 +62,7 @@ class Register:
 
         # Hence
         try:
-            self.__ecs_client.register_task_definition(
+            message = self.__ecs_client.register_task_definition(
                 family=definitions.get('family'),
                 taskRoleArn=self.__task_role_arn,
                 executionRoleArn=self.__execution_role_arn,
@@ -71,7 +72,9 @@ class Register:
                 cpu=definitions.get('cpu'),
                 memory=definitions.get('memory'),
                 tags=definitions.get('tags'),
-                runtimePlatform=definitions.get('runtimePlatform')
-            )
+                runtimePlatform=definitions.get('runtimePlatform'))
         except botocore.exceptions.ClientError as err:
             raise err from err
+
+        name = message['taskDefinition']['taskDefinitionArn'].rsplit(sep='/', maxsplit=1)[0]
+        logging.info('Created Task Definition: %s', name)
