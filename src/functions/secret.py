@@ -49,7 +49,7 @@ class Secret:
 
         return secret_value['SecretString']
 
-    def exc(self, secret_id: str, node: str = None) -> str:
+    def exc(self, secret_id: str, node: str = None) -> str | dict:
         """
         Gets the value of a secret key.
 
@@ -64,6 +64,6 @@ class Secret:
         dictionary: dict = json.loads(expression)
 
         if node is None:
-            return dictionary[secret_id]
+            return dictionary
 
         return dictionary[node]
