@@ -2,6 +2,7 @@
 import logging
 
 import boto3
+import botocore.exceptions
 
 import config
 import src.functions.secret
@@ -38,7 +39,7 @@ class Register:
 
         self.__logger.info(definitions.get('family'))
 
-        '''
+
         try:
             self.__ecs_client.register_task_definition(
                 family=definitions.get('family'),
@@ -47,4 +48,4 @@ class Register:
             )
         except botocore.exceptions.ClientError as err:
             raise err from err
-        '''
+
