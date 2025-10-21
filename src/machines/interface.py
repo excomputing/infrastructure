@@ -32,7 +32,8 @@ class Interface:
 
         definition: dict = self.__s3_configurations.objects(key_name=f'{self.__machines_prefix}{name}.json')
         logging.info(definition.get('States'))
-
+        states: dict = definition.get('States')
+        logging.info(states.keys())
 
     def exc(self):
 
