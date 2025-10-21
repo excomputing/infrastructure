@@ -31,9 +31,11 @@ class Interface:
     def __definition(self, name: str):
 
         definition: dict = self.__s3_configurations.objects(key_name=f'{self.__machines_prefix}{name}.json')
-        logging.info(definition.get('States'))
+
         states: dict = definition.get('States')
-        logging.info(states.keys())
+        __keys: list[str] = list(states)
+        keys = [state for state in __keys if not state.lower().__contains__('notify')]
+        logging.info(keys)
 
     def exc(self):
 
