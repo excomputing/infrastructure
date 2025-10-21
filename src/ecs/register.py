@@ -51,7 +51,9 @@ class Register:
                 containerDefinitions=container_definitions,
                 requiresCompatibilities=definitions.get('requiresCompatibilities'),
                 cpu=definitions.get('cpu'),
-                memory=definitions.get('memory')
+                memory=definitions.get('memory'),
+                tags=definitions.get('tags'),
+                runtimePlatform=definitions.get('runtimePlatform')
             )
         except botocore.exceptions.ClientError as err:
             raise err from err
