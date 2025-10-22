@@ -68,7 +68,7 @@ class Machine:
         exist = self.describe_state_machine(machine=machine)
         logging.info(exist)
 
-        '''
+
         if exist:
             self.update_state_machine(machine=machine)
             return None
@@ -83,7 +83,6 @@ class Machine:
             logging.info(response['stateMachineArn'].rsplit(sep=':', maxsplit=1)[1])
         except botocore.exceptions.ClientError as err:
             raise err from err
-        '''
 
     def delete_state_machine(self, machine: dict):
         pass
