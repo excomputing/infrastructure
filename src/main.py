@@ -18,8 +18,11 @@ def main():
     logger.info('Starting: %s', datetime.datetime.now().isoformat(timespec='microseconds'))
 
     # Infrastructure
-    src.ecs.interface.Interface(
-        connector=connector, s3_parameters=s3_parameters, arguments=arguments, settings=settings).exc()
+    # src.ecs.interface.Interface(
+    #     connector=connector, s3_parameters=s3_parameters, arguments=arguments, settings=settings).exc()
+
+    src.machines.interface.Interface(
+        connector=connector, s3_parameters=s3_parameters, arguments=arguments).exc(settings=settings)
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
@@ -43,6 +46,7 @@ if __name__ == '__main__':
     import src.elements.service as sr
     import src.elements.s3_parameters as s3p
     import src.functions.cache
+    import src.machines.interface
     import src.preface.interface
 
     connector: boto3.session.Session
