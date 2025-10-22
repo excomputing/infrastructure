@@ -66,13 +66,13 @@ class Machine:
         """
 
         exist = self.describe_state_machine(machine=machine)
-        logging.info(exist)
 
-
+        # if it exists, update it
         if exist:
             self.update_state_machine(machine=machine)
             return None
 
+        # otherwise, create it
         try:
             response = self.__sfn_client.create_state_machine(
                 name=machine.get('name'),
