@@ -107,10 +107,8 @@ class Interface:
             definition = self.__states_messaging(definition=definition.copy())
 
             # the machine
-            logging.info(json.dumps(definition))
             machine['definition'] = json.dumps(definition)
             machine['roleArn'] = self.__secrets.get('sfn-role-arn')
-            logging.info(machine)
 
             # create
             src.machines.machine.Machine(
