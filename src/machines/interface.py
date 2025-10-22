@@ -5,10 +5,14 @@ import boto3
 
 import src.elements.s3_parameters as s3p
 import src.functions.secret
+import src.machines.machine
 import src.s3.configurations
 
 
 class Interface:
+    """
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/stepfunctions.html
+    """
 
     def __init__(self, connector: boto3.session.Session, s3_parameters: s3p.S3Parameters, arguments: dict):
         """
@@ -102,4 +106,10 @@ class Interface:
             definition = self.__states_messaging(definition=definition.copy())
 
             # the machine
-            logging.info(definition)
+            machine['definition'] = definition
+            machine['roleArn'] = self.__secrets.get('sfn_role_arn')
+            logging.info(machine)
+
+            # create
+            src.machines.machine.Machine(
+                connector=self.__connector, secrets=self.__secrets).create_state_machine(machine=machine)
