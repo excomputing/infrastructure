@@ -18,8 +18,8 @@ def main():
     logger.info('Starting: %s', datetime.datetime.now().isoformat(timespec='microseconds'))
 
     # Infrastructure
-    # src.ecs.interface.Interface(
-    #     connector=connector, s3_parameters=s3_parameters, arguments=arguments, settings=settings).exc()
+    src.ecs.interface.Interface(
+        connector=connector, s3_parameters=s3_parameters, arguments=arguments, settings=settings).exc()
 
     src.machines.interface.Interface(
         connector=connector, s3_parameters=s3_parameters, arguments=arguments).exc(settings=settings)
