@@ -85,4 +85,25 @@ class Machine:
             raise err from err
 
     def delete_state_machine(self, machine: dict):
-        pass
+        """
+
+        :param machine:
+        :return:
+        """
+
+        exist = self.describe_state_machine(machine=machine)
+
+        # if the state machine in question does not exist
+        if not exist:
+            logging.info('A state machine named %s does not exist', machine.get('name'))
+            return None
+
+        # otherwise, delete it
+        try:
+            message = self.__sfn_client.delete_state_machine(
+                stateMachineArn=self.__secrets.get('sfn-endpoint') + machine.get('name'))
+            logging.info('Does the state machine %s still exists: %s', machine.get('name'), bool(message))
+        except self.__sfn_client.exceptions.InvalidArn:
+            raise 'Invalid Amazon Resource Name'
+        except botocore.exceptions.ClientError as err:
+            raise err from err
