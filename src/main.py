@@ -28,10 +28,10 @@ def main():
     src.functions.cache.Cache().exc()
 
 
-# noinspection DuplicatedCode
 if __name__ == '__main__':
 
     # Paths
+    # noinspection DuplicatedCode
     root = os.getcwd()
     sys.path.append(root)
     sys.path.append(os.path.join(root, 'src'))
