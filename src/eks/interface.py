@@ -4,12 +4,16 @@ import logging
 
 import boto3
 
-import src.eks.role
 import src.eks.node
+import src.eks.pod
+import src.eks.role
 import src.elements.s3_parameters as s3p
 
 
 class Interface:
+    """
+    The interface to the Elastic Kubernetes Service programs.
+    """
 
     def __init__(self, connector: boto3.session.Session, s3_parameters: s3p.S3Parameters, arguments: dict):
         """
@@ -36,4 +40,7 @@ class Interface:
             connector=self.__connector, arguments=self.__arguments).__call__()
 
         src.eks.node.Node(
+            connector=self.__connector, arguments=self.__arguments).__call__()
+
+        src.eks.pod.Pod(
             connector=self.__connector, arguments=self.__arguments).__call__()
