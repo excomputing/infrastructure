@@ -36,7 +36,7 @@ class Role:
         :return:
         """
 
-        objects = self.__objects.read(uri=os.path.join(os.getcwd(), 'src', 'eks', 'cluster-trust-policy.json'))
+        objects = self.__objects.read(uri=os.path.join(os.getcwd(), 'src', 'eks', 'role-trust-policy.json'))
 
         return json.dumps(objects)
 
