@@ -7,6 +7,13 @@
 > * [node pool](https://docs.aws.amazon.com/eks/latest/userguide/create-node-pool.html)
 
 <br>
+
+## Notes
+
+Steps:
+* A cluster wherein the built-in NodePools are disabled.
+
+<br>
 <br>
 
 <br>
