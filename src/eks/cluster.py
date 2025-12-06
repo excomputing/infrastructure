@@ -1,0 +1,40 @@
+"""Module cluster.py"""
+import logging
+
+import boto3
+import botocore.exceptions
+
+
+class Cluster:
+    """
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/eks/client/create_cluster.html
+    """
+
+    def __init__(self, connector: boto3.session.Session, arguments: dict):
+        """
+
+        :param connector: A boto3 session instance, it retrieves the developer's <default> Amazon
+                          Web Services (AWS) profile details, which allows for programmatic interaction with AWS.
+        :param arguments:
+        """
+
+        self.__connector = connector
+        self.__eks_client = self.__connector.client(service_name='eks')
+        self.__arguments = arguments
+
+    def __call__(self):
+        """
+        cluster, additions
+
+        :return:
+        """
+
+        try:
+            specifications: dict = self.__eks_client.create_cluster(
+                name="EnvironmentCluster",
+                version="1.33"
+            )
+        except botocore.exceptions.ClientError as err:
+            raise err from err
+
+        logging.info(specifications)
