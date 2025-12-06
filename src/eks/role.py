@@ -68,9 +68,13 @@ class Role:
         logging.info(specification)
 
         # Attach role policy
-        message = self.__iam_client.attach_role_policy(
-            RoleName=specification.get('Role').get('RoleName'),
-            PolicyArn='arn:aws:iam::aws:policy/AmazonEKSClusterPolicy'
-        )
+        policies = [
+            'AmazonEKSClusterPolicy', 'AmazonEKSBlockStoragePolicy', 'AmazonEKSComputePolicy',
+            'AmazonEKSLoadBalancingPolicy', 'AmazonEKSNetworkingPolicy']
 
-        logging.info(message)
+        for policy in policies:
+            message = self.__iam_client.attach_role_policy(
+                RoleName=specification.get('Role').get('RoleName'),
+                PolicyArn=f'arn:aws:iam::aws:policy/{policy}'
+            )
+            logging.info(message)
