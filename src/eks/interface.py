@@ -5,6 +5,7 @@ import logging
 import boto3
 
 import src.eks.role
+import src.eks.node
 import src.elements.s3_parameters as s3p
 
 
@@ -32,4 +33,7 @@ class Interface:
         """
 
         src.eks.role.Role(
+            connector=self.__connector, arguments=self.__arguments).__call__()
+
+        src.eks.node.Node(
             connector=self.__connector, arguments=self.__arguments).__call__()
