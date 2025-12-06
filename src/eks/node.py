@@ -1,4 +1,4 @@
-"""Module register.py"""
+"""Module node.py"""
 import json
 import logging
 import os
