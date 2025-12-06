@@ -47,7 +47,7 @@ class Pod:
         :return:
         """
 
-        role_name = 'AmazonEKSPodIdentityAmazonCloudWatchObservabilityRole'
+        role_name = 'AmazonEKSPodIdentityPermissionPolicies'
 
         # Create baseline role
         try:
@@ -70,11 +70,17 @@ class Pod:
         logging.info(specification)
 
         # Attach role policy
-        policies = ['CloudWatchAgentServerPolicy']
+        policies = ['CloudWatchAgentServerPolicy', 'CloudWatchNetworkFlowMonitorAgentPublishPolicy',
+                    'AmazonEKS_CNI_Policy']
 
         for policy in policies:
             message = self.__iam_client.attach_role_policy(
                 RoleName=specification.get('Role').get('RoleName'),
-                PolicyArn=f'arn:aws:iam::aws:policy/{policy}'
-            )
+                PolicyArn=f'arn:aws:iam::aws:policy/{policy}')
             logging.info(message)
+
+        # Service role policy
+        message = self.__iam_client.attach_role_policy(
+            RoleName=specification.get('Role').get('RoleName'),
+            PolicyArn='arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy')
+        logging.info(message)
