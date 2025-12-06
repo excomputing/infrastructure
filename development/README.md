@@ -13,6 +13,15 @@
 Steps:
 * A cluster wherein the [built-in NodePools](https://docs.aws.amazon.com/eks/latest/userguide/set-builtin-node-pools.html) are disabled.
 
+
+Inspecting:
+
+```bash
+aws eks describe-cluster --name {cluster.name}
+aws eks list-addons --cluster-name {cluster.name}
+aws eks describe-addon --cluster-name {cluster.name} --addon-name {add.on.name}
+```
+
 <br>
 <br>
 
