@@ -11,7 +11,7 @@
 ## Notes
 
 Steps:
-* A cluster wherein the built-in NodePools are disabled.
+* A cluster wherein the [built-in NodePools](https://docs.aws.amazon.com/eks/latest/userguide/set-builtin-node-pools.html) are disabled.
 
 <br>
 <br>
