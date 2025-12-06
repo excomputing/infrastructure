@@ -12,6 +12,7 @@ class Interface:
 
     def __init__(self, connector: boto3.session.Session, s3_parameters: s3p.S3Parameters, arguments: dict):
         """
+        https://docs.aws.amazon.com/eks/latest/userguide/cluster-iam-role.html
 
         :param connector: A boto3 session instance, it retrieves the developer's <default> Amazon
                           Web Services (AWS) profile details, which allows for programmatic interaction with AWS.
