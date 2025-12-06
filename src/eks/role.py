@@ -1,4 +1,4 @@
-"""Module register.py"""
+"""Module role.py"""
 import json
 import logging
 import os
