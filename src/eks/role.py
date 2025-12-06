@@ -11,6 +11,7 @@ import src.functions.objects
 
 class Role:
     """
+    eksClusterRole
     https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iam/client/create_role.html
     """
 
@@ -60,8 +61,9 @@ class Role:
                     {'Key': 'project', 'Value': self.__arguments.get('project_tag')}
                 ]
             )
-        except self.__iam_client.exceptions.EntityAlreadyExistsException as err:
-            raise err from err
+        except self.__iam_client.exceptions.EntityAlreadyExistsException:
+            logging.info('%s exists', role_name)
+            return None
         except botocore.exceptions.ClientError as err:
             raise err from err
 
