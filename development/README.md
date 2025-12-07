@@ -40,7 +40,7 @@ aws eks update-kubeconfig --region {region.code} --name {cluster.name}
 kubectl get svc
 ```
 
-creates; the second directive tests.  The Amazon EKS cluster authentication directive is 
+creates; the second directive is `test` directive.  The Amazon EKS cluster authentication directive is 
 
 ```shell
 aws eks get-token --cluster-name {cluster.name}
