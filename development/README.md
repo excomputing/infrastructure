@@ -10,7 +10,7 @@
 
 <br>
 
-## Initially
+## INITIALLY
 
 * A cluster wherein the [built-in NodePools](https://docs.aws.amazon.com/eks/latest/userguide/set-builtin-node-pools.html) are disabled.
 
@@ -23,11 +23,10 @@ aws eks describe-addon --cluster-name {cluster.name} --addon-name {add.on.name}
 ```
 
 <br>
-<br>
 
-## kubectl & EKS
+## KUBECTL & EKS
 
-### Connecting
+### connecting
 
 > [!IMPORTANT]
 > [Connect kubectl to an EKS cluster by creating a kubeconfig file](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html)
