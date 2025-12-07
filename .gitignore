@@ -209,3 +209,5 @@ __marimo__/
 # Exclude Amazon Web Services CLI (Command Line Interface) JSON (JavaScript Object Notation) data
 interface/**/*.json
 src/ec2/data*
+src/eks/*.yaml
+src/eks/*.sh
