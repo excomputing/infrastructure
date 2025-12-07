@@ -44,6 +44,23 @@ aws eks get-token --cluster-name {cluster.name}
 ```
 
 <br>
+
+### node class, node pool
+
+Next, the node class & node pool
+
+```shell
+kubectl apply -f src/eks/nodeclass.yaml
+kubectl apply -f src/eks/nodepool.yaml
+```
+
+and inspecting
+
+```shell
+kubectl get nodepools
+```
+
+<br>
 <br>
 
 <br>
