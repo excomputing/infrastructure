@@ -1,8 +1,10 @@
 """Module cluster.py"""
 import logging
+import os
 
 import boto3
 import botocore.exceptions
+import src.functions.objects
 
 
 class Cluster:
@@ -21,6 +23,19 @@ class Cluster:
         self.__connector = connector
         self.__eks_client = self.__connector.client(service_name='eks')
         self.__arguments = arguments
+
+    @staticmethod
+    def __get_settings() -> dict:
+        """
+
+        :return:
+        """
+
+        objects = src.functions.objects.Objects()
+        settings = objects.read(uri=os.path.join(os.getcwd(), 'src', 'eks', 'settings.json'))
+        logging.info(settings)
+
+        return settings
 
     def __call__(self):
         """
