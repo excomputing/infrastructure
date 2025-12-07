@@ -211,3 +211,4 @@ interface/**/*.json
 src/ec2/data*
 src/eks/*.yaml
 src/eks/*.sh
+src/eks/settings.json
