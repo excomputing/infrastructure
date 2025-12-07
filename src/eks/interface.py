@@ -4,10 +4,10 @@ import logging
 
 import boto3
 
+import src.eks.cluster
 import src.eks.node
 import src.eks.pod
 import src.eks.role
-import src.eks.cluster
 import src.elements.s3_parameters as s3p
 
 
