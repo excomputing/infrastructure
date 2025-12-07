@@ -31,8 +31,19 @@ class Cluster:
 
         try:
             specifications: dict = self.__eks_client.create_cluster(
-                name="EnvironmentCluster",
-                version="1.33"
+                name="",
+                version="1.34",
+                roleArn="",
+                resourcesVpcConfig={},
+                kubernetesNetworkConfig={},
+                logging={},
+                tags={"project": self.__arguments.get("project-tag")},
+                upgradePolicy={},
+                zonalShiftConfig={},
+                computeConfig={},
+                storageConfig={},
+                deletionProtection=False,
+                controlPlaneScalingConfig={'tier': 'tier-xl'}
             )
         except botocore.exceptions.ClientError as err:
             raise err from err
