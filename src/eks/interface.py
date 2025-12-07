@@ -7,6 +7,7 @@ import boto3
 import src.eks.node
 import src.eks.pod
 import src.eks.role
+import src.eks.cluster
 import src.elements.s3_parameters as s3p
 
 
@@ -43,4 +44,7 @@ class Interface:
             connector=self.__connector, arguments=self.__arguments).__call__()
 
         src.eks.pod.Pod(
+            connector=self.__connector, arguments=self.__arguments).__call__()
+
+        src.eks.cluster.Cluster(
             connector=self.__connector, arguments=self.__arguments).__call__()
