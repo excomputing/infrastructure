@@ -22,6 +22,28 @@ aws eks describe-addon --cluster-name {cluster.name} --addon-name {add.on.name}
 ```
 
 <br>
+
+### kubectl & EKS
+
+> [!IMPORTANT]
+> [Connect kubectl to an EKS cluster by creating a kubeconfig file](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html)
+
+<br>
+
+`kubectl` connects to an Elastic Kubernetes Service (EKS) cluster via a kubeconfig file, which the directive
+
+```shell
+aws eks update-kubeconfig --region {region.code} --name {cluster.name}
+kubectl get svc
+```
+
+creates; the second directive tests.  The Amazon EKS cluster authentication directive is 
+
+```shell
+aws eks get-token --cluster-name {cluster.name}
+```
+
+<br>
 <br>
 
 <br>
