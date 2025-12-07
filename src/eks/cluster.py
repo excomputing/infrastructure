@@ -27,6 +27,9 @@ class Cluster:
     @staticmethod
     def __get_settings() -> dict:
         """
+        Reference: <a
+        href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/eks/client/create_cluster.html">
+        create_cluster</a><br><br>
 
         :return:
         """
