@@ -47,6 +47,9 @@ class Cluster:
         :return:
         """
 
+        self.__get_settings()
+
+        '''
         try:
             specifications: dict = self.__eks_client.create_cluster(
                 name="",
@@ -67,3 +70,4 @@ class Cluster:
             raise err from err
 
         logging.info(specifications)
+        '''
