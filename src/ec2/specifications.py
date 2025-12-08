@@ -1,9 +1,18 @@
+"""Module specifications.py"""
 import os
-import src.functions.objects
+
 import src.elements.ec2_pathways as ec2p
+import src.functions.objects
 
 
 class Specifications:
+    """
+
+    <b>Notes</b><br>
+    ------<br>
+    Reads-in the top level EC2 launch template specifications; probably outlined in
+    a `specifications.json` data file.<br>
+    """
 
     def __init__(self):
         """
