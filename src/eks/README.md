@@ -20,7 +20,7 @@ Setting up
 <br>
 
 
-## CLUSTER & ADDITIONS
+## `CLUSTER` & `ADDITIONS`
 
 A cluster wherein the [built-in NodePools](https://docs.aws.amazon.com/eks/latest/userguide/set-builtin-node-pools.html) are disabled:
 
@@ -38,7 +38,7 @@ aws eks describe-addon --cluster-name {cluster.name} --addon-name {add.on.name}
 
 <br>
 
-## `KUBECTL` & EKS & `EKSCTL`
+## `KUBECTL` & `EKS` & `EKSCTL`
 
 ### connecting
 
