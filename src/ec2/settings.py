@@ -27,7 +27,7 @@ class Settings:
         self.__assets: dict = self.__secret.exc(secret_id=self.__arguments.get('project_key_name'))
         self.__details = src.ec2.details.Details()
 
-    def data(self) -> dict:
+    def __call__(self) -> dict:
         """
         Dependencies &Rarr; data.json, data-base64.txt
 
