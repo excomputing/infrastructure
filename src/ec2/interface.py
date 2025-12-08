@@ -41,4 +41,4 @@ class Interface:
         __settings = src.ec2.settings.Settings(connector=self.__connector, arguments=self.__arguments)
 
         template = src.ec2.template.Template(connector=self.__connector)
-        template.exc(specifications=specifications, data=__settings.data())
+        template.exc(specifications=specifications, data=__settings.__call__())
