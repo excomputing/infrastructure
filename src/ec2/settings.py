@@ -25,102 +25,27 @@ class Settings:
         # Instances
         self.__secret = src.functions.secret.Secret(connector=self.__connector)
         self.__assets: dict = self.__secret.exc(secret_id=self.__arguments.get('project_key_name'))
-
-        # Data
-        self.__network_interfaces = [
-            {
-                "AssociatePublicIpAddress": True,
-                "DeleteOnTermination": True,
-                "DeviceIndex": 0,
-                "Groups": None,
-                "InterfaceType": "interface",
-                "SubnetId": None,
-                "NetworkCardIndex": 0
-            }
-        ]
-
-        self.__data = {
-            "EbsOptimized": True,
-            "IamInstanceProfile": {"Arn": None},
-            "BlockDeviceMappings": [
-                {
-                    "DeviceName": "/dev/sda1",
-                    "Ebs": {
-                        "Encrypted": False,
-                        "DeleteOnTermination": True,
-                        "Iops": 3000,
-                        "VolumeSize": 29,
-                        "VolumeType": "gp3",
-                        "Throughput": 125
-                    }
-                }
-            ],
-            "ImageId": "ami-0f64121fa59598bf7",
-            "InstanceType": "t3.small",
-            "KeyName": None,
-            "Monitoring": {
-                "Enabled": False
-            },
-            "Placement": {
-                "AvailabilityZone": None,
-                "Tenancy": "default"
-            },
-            "DisableApiTermination": False,
-            "InstanceInitiatedShutdownBehavior": "terminate",
-            "UserData": None,
-            "TagSpecifications": [
-                {
-                    "ResourceType": "instance",
-                    "Tags": [{"Key": "project", "Value": self.__arguments.get('project_tag')}]
-                }
-            ],
-            "CapacityReservationSpecification": {
-                "CapacityReservationPreference": "open"
-            },
-            "HibernationOptions": {
-                "Configured": False
-            },
-            "MetadataOptions": {
-                "HttpTokens": "optional",
-                "HttpPutResponseHopLimit": 1,
-                "HttpEndpoint": "enabled",
-                "HttpProtocolIpv6": "disabled",
-                "InstanceMetadataTags": "enabled"
-            }
-        }
-
-    def specifications(self) -> dict:
-        """
-
-        :return:
-        """
-
-        return {
-            "LaunchTemplateName": "EnvironmentCompute",
-            "VersionDescription": "The compute outline of the environment project.",
-            "TagSpecifications": [{
-                "ResourceType": "launch-template",
-                "Tags": [{"Key": "project", "Value": self.__arguments.get('project_tag')}]
-            }]
-        }
+        self.__details = src.ec2.details.Details()
 
     def data(self) -> dict:
         """
+        Dependencies &Rarr; data.json, data-base64.txt
 
         :return:
         """
 
-        self.__data['IamInstanceProfile']['Arn'] = self.__assets.get('i-am-instance-profile')
-        self.__data['KeyName'] = self.__assets.get('key-name')
-        self.__data['Placement']['AvailabilityZone'] = self.__assets.get('availability-zone')
-        self.__data['UserData'] = src.ec2.details.Details().__call__()
+        __data = self.__details.template(strings=['batch', 'data.json'])
+        __data['IamInstanceProfile'] = {"Arn": self.__assets.get('i-am-instance-profile')}
+        __data['KeyName'] = self.__assets.get('key-name')
+        __data['Placement']['AvailabilityZone'] = self.__assets.get('availability-zone')
+        __data['UserData'] = self.__details.directives(strings=['batch', 'data-base64.txt'])
 
         parts = []
-        for part in self.__network_interfaces:
+        for part in self.__details.network_interfaces:
             part['Groups'] = self.__assets.get('security-groups')
             part['SubnetId'] = self.__assets.get('subnet-id')
             parts.append(part)
 
-        self.__data['NetworkInterfaces'] = parts
+        __data['NetworkInterfaces'] = parts
 
-        return self.__data
+        return __data
