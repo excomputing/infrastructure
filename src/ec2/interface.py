@@ -5,6 +5,7 @@ import boto3
 
 import src.ec2.settings
 import src.ec2.template
+import src.ec2.specifications
 import src.elements.s3_parameters as s3p
 
 
@@ -27,17 +28,17 @@ class Interface:
         self.__s3_parameters = s3_parameters
         self.__arguments = arguments
 
-        # Temporary set-up.  In future the raw `specifications` & `data` will be read from files.
-        self.__settings = src.ec2.settings.Settings(connector=self.__connector, arguments=self.__arguments)
-
-    def exc(self):
+    def exc(self, str_specifications: list):
         """
 
         :return:
         """
 
-        template = src.ec2.template.Template(connector=self.__connector)
-        logging.info(self.__settings.specifications())
-        logging.info(self.__settings.data())
+        __specifications = src.ec2.specifications.Specifications()
+        specifications = __specifications.__call__(strings=str_specifications)
 
-        template.exc(specifications=self.__settings.specifications(), data=self.__settings.data())
+        # Data settings
+        __settings = src.ec2.settings.Settings(connector=self.__connector, arguments=self.__arguments)
+
+        template = src.ec2.template.Template(connector=self.__connector)
+        template.exc(specifications=specifications, data=__settings.data())
