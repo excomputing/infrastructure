@@ -1,8 +1,8 @@
-"""Module details.py"""
+"""Module settings.py"""
 import os
 
-import src.functions.objects
 import src.elements.ec2_pathways as ec2p
+import src.functions.objects
 
 
 class Settings:
@@ -35,7 +35,7 @@ class Settings:
 
     def template(self):
         """
-        e.g., ['eks', 'template.json']
+        e.g., ['...', 'template.json']
 
         :return:
         """
@@ -46,7 +46,7 @@ class Settings:
 
     def directives(self) -> str:
         """
-        e.g., ['eks', 'data-base64.txt']
+        e.g., ['...', 'directives-base64.txt']
 
         :return:
         """
