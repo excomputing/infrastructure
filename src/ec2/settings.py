@@ -5,7 +5,7 @@ import os
 import src.functions.objects
 
 
-class Details:
+class Settings:
     """
     Reads-in the Base 64 computing details file.
     """
