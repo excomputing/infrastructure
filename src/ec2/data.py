@@ -3,7 +3,7 @@ import logging
 
 import boto3
 
-import src.ec2.details
+import src.ec2.settings
 import src.functions.secret
 
 
@@ -25,7 +25,7 @@ class Data:
         # Instances
         self.__secret = src.functions.secret.Secret(connector=self.__connector)
         self.__assets: dict = self.__secret.exc(secret_id=self.__arguments.get('project_key_name'))
-        self.__details = src.ec2.details.Details()
+        self.__settings = src.ec2.settings.Settings()
 
     def __call__(self) -> dict:
         """
@@ -34,14 +34,14 @@ class Data:
         :return:
         """
 
-        __data = self.__details.template(strings=['batch', 'data.json'])
+        __data = self.__settings.template(strings=['batch', 'data.json'])
         __data['IamInstanceProfile'] = {"Arn": self.__assets.get('i-am-instance-profile')}
         __data['KeyName'] = self.__assets.get('key-name')
         __data['Placement']['AvailabilityZone'] = self.__assets.get('availability-zone')
-        __data['UserData'] = self.__details.directives(strings=['batch', 'data-base64.txt'])
+        __data['UserData'] = self.__settings.directives(strings=['batch', 'data-base64.txt'])
 
         parts = []
-        for part in self.__details.network_interfaces:
+        for part in self.__settings.network_interfaces:
             part['Groups'] = self.__assets.get('security-groups')
             part['SubnetId'] = self.__assets.get('subnet-id')
             parts.append(part)
