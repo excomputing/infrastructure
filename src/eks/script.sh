@@ -7,12 +7,18 @@ of `amd64`.
 If the project machine has an installation of Docker Desktop, it is quite possible that kubectl is installed.  If not
 
 ```bash
-curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.5/2025-11-13/bin/linux/amd64/kubectl
-curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.5/2025-11-13/bin/linux/amd64/kubectl.sha256
+curl -O https://s3.{region.code}.amazonaws.com/amazon-eks/1.33.5/2025-11-13/bin/linux/amd64/kubectl
+curl -O https://s3.{region.code}.amazonaws.com/amazon-eks/1.33.5/2025-11-13/bin/linux/amd64/kubectl.sha256
 chmod +x ./kubectl
 mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
 echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
+
+kubectl version --client
 ```
+
+Option:
+  snap install kubectl --classic
+
 comment
 
 
