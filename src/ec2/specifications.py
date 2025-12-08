@@ -1,5 +1,7 @@
 import os
 import src.functions.objects
+import src.elements.ec2_pathways as ec2p
+
 
 class Specifications:
 
@@ -10,13 +12,13 @@ class Specifications:
 
         self.__path = os.path.join(os.getcwd(), 'src')
 
-    def __call__(self, strings: list[str]):
+    def __call__(self, ec2_pathways: ec2p.EC2Pathways):
         """
 
-        :param strings:
+        :param ec2_pathways:
         :return:
         """
 
         objects = src.functions.objects.Objects()
 
-        return objects.read(uri=os.path.join(self.__path, *strings))
+        return objects.read(uri=os.path.join(self.__path, *ec2_pathways.specifications))
