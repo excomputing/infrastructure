@@ -62,7 +62,7 @@ aws eks get-token --cluster-name {cluster.name}
 
 <br>
 
-### node class, node pool
+### custom node class, custom node pool
 
 > [!IMPORTANT]
 > * [Create a Node Class for Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/create-node-class.html), [node classes](https://karpenter.sh/docs/concepts/nodeclasses/)
@@ -80,6 +80,13 @@ and inspecting
 ```shell
 kubectl get nodepools
 ```
+
+<br>
+
+### custom node class: access entry
+
+> [!IMPORTANT]
+> * [Create node class access entry](https://docs.aws.amazon.com/eks/latest/userguide/create-node-class.html#auto-node-access-entry)
 
 <br>
 <br>
