@@ -7,7 +7,7 @@ import src.ec2.details
 import src.functions.secret
 
 
-class Settings:
+class Data:
     """
     A temporary set-up
     """
