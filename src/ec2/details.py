@@ -2,6 +2,8 @@
 import logging
 import os
 
+import src.functions.objects
+
 
 class Details:
     """
@@ -13,16 +15,39 @@ class Details:
         Constructor
         """
 
-        self.__path = os.path.join(os.getcwd(), 'src', 'ec2')
+        self.__path = os.path.join(os.getcwd(), 'src')
 
-    def __call__(self) -> str:
+        self.network_interfaces = [
+            {
+                "AssociatePublicIpAddress": True,
+                "DeleteOnTermination": True,
+                "DeviceIndex": 0,
+                "Groups": None,
+                "InterfaceType": "interface",
+                "SubnetId": None,
+                "NetworkCardIndex": 0
+            }
+        ]
+
+    def template(self, strings: list):
         """
 
+        :param strings: e.g., ['eks', 'data.json']
         :return:
         """
 
+        objects = src.functions.objects.Objects()
 
-        with open(file=os.path.join(self.__path, 'data-base64.txt'), mode='r') as disk:
+        return objects.read(uri=os.path.join(self.__path, *strings))
+
+    def directives(self, strings: list) -> str:
+        """
+
+        :param strings: e.g., ['eks', 'data-base64.txt']
+        :return:
+        """
+
+        with open(file=os.path.join(self.__path, *strings), mode='r') as disk:
             encodings = disk.read()
 
         logging.info(encodings)
