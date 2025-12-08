@@ -65,7 +65,7 @@ aws eks get-token --cluster-name {cluster.name}
 ### node class, node pool
 
 > [!IMPORTANT]
-> * [Create a Node Class for Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/create-node-class.html)
+> * [Create a Node Class for Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/create-node-class.html), [node classes](https://karpenter.sh/docs/concepts/nodeclasses/)
 > * [Create a Node Pool for EKS Auto Mode](https://docs.aws.amazon.com/eks/latest/userguide/create-node-pool.html)
 
 Next, the node class & node pool
