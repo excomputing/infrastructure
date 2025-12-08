@@ -1,5 +1,4 @@
-
-import logging
+"""Module start.py"""
 
 import boto3
 
