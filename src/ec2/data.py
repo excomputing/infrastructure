@@ -4,6 +4,7 @@ import logging
 import boto3
 
 import src.ec2.settings
+import src.elements.ec2_pathways as ec2p
 import src.functions.secret
 
 
@@ -25,23 +26,25 @@ class Data:
         # Instances
         self.__secret = src.functions.secret.Secret(connector=self.__connector)
         self.__assets: dict = self.__secret.exc(secret_id=self.__arguments.get('project_key_name'))
-        self.__settings = src.ec2.settings.Settings()
 
-    def __call__(self) -> dict:
+
+    def __call__(self, ec2_pathways: ec2p.EC2Pathways) -> dict:
         """
-        Dependencies &Rarr; data.json, data-base64.txt
 
+        :param ec2_pathways:
         :return:
         """
 
-        __data = self.__settings.template(strings=['batch', 'data.json'])
+        __settings = src.ec2.settings.Settings(ec2_pathways=ec2_pathways)
+
+        __data = __settings.template()
         __data['IamInstanceProfile'] = {"Arn": self.__assets.get('i-am-instance-profile')}
         __data['KeyName'] = self.__assets.get('key-name')
         __data['Placement']['AvailabilityZone'] = self.__assets.get('availability-zone')
-        __data['UserData'] = self.__settings.directives(strings=['batch', 'data-base64.txt'])
+        __data['UserData'] = __settings.directives()
 
         parts = []
-        for part in self.__settings.network_interfaces:
+        for part in __settings.network_interfaces:
             part['Groups'] = self.__assets.get('security-groups')
             part['SubnetId'] = self.__assets.get('subnet-id')
             parts.append(part)
