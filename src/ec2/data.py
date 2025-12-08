@@ -1,4 +1,4 @@
-"""Module settings.py"""
+"""Module data.py"""
 import logging
 
 import boto3
