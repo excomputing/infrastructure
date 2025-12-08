@@ -1,6 +1,6 @@
 <br>
 
-* [kubernetes](../src/eks/README.md)
+* [Elastic Kubernetes Service](../src/eks/README.md)
 * [AWS CLI](https://docs.aws.amazon.com/cli/latest/reference/#cli-aws)
 
 ## Notes
