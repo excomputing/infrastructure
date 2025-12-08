@@ -88,6 +88,10 @@ kubectl get nodepools
 > [!IMPORTANT]
 > * [Create node class access entry](https://docs.aws.amazon.com/eks/latest/userguide/create-node-class.html#auto-node-access-entry)
 
+```shell
+bash src/eks/node-class-access.sh {cluster.name} {principal.amazon.resource.name}
+```
+
 <br>
 <br>
 
