@@ -1,5 +1,4 @@
 """Module details.py"""
-import logging
 import os
 
 import src.functions.objects
@@ -49,7 +48,5 @@ class Settings:
 
         with open(file=os.path.join(self.__path, *strings), mode='r') as disk:
             encodings = disk.read()
-
-        logging.info(encodings)
 
         return encodings
