@@ -2,6 +2,7 @@
 import os
 
 import src.functions.objects
+import src.elements.ec2_pathways as ec2p
 
 
 class Settings:
@@ -9,13 +10,17 @@ class Settings:
     Reads-in the Base 64 computing details file.
     """
 
-    def __init__(self):
+    def __init__(self, ec2_pathways: ec2p.EC2Pathways):
         """
         Constructor
         """
 
+        self.__ec2_pathways = ec2_pathways
+
+        # Root
         self.__path = os.path.join(os.getcwd(), 'src')
 
+        # The network interfaces data of the launch template data section
         self.network_interfaces = [
             {
                 "AssociatePublicIpAddress": True,
@@ -28,25 +33,25 @@ class Settings:
             }
         ]
 
-    def template(self, strings: list):
+    def template(self):
         """
+        e.g., ['eks', 'template.json']
 
-        :param strings: e.g., ['eks', 'data.json']
         :return:
         """
 
         objects = src.functions.objects.Objects()
 
-        return objects.read(uri=os.path.join(self.__path, *strings))
+        return objects.read(uri=os.path.join(self.__path, *self.__ec2_pathways.template))
 
-    def directives(self, strings: list) -> str:
+    def directives(self) -> str:
         """
+        e.g., ['eks', 'data-base64.txt']
 
-        :param strings: e.g., ['eks', 'data-base64.txt']
         :return:
         """
 
-        with open(file=os.path.join(self.__path, *strings), mode='r') as disk:
+        with open(file=os.path.join(self.__path, *self.__ec2_pathways.directives), mode='r') as disk:
             encodings = disk.read()
 
         return encodings
