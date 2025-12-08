@@ -4,10 +4,10 @@ import logging
 import boto3
 
 import src.ec2.data
-import src.ec2.template
 import src.ec2.specifications
-import src.elements.s3_parameters as s3p
+import src.ec2.template
 import src.elements.ec2_pathways as ec2p
+import src.elements.s3_parameters as s3p
 
 
 class Interface:
@@ -31,9 +31,6 @@ class Interface:
 
     def exc(self, ec2_pathways: ec2p.EC2Pathways):
         """
-        ['batch', 'specifications.txt']
-        ['batch', 'template.json']
-        ['batch', 'data-base64.txt']
 
         :return:
         """
