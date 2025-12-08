@@ -7,6 +7,7 @@ import src.ec2.data
 import src.ec2.template
 import src.ec2.specifications
 import src.elements.s3_parameters as s3p
+import src.elements.ec2_pathways as ec2p
 
 
 class Interface:
@@ -28,19 +29,22 @@ class Interface:
         self.__s3_parameters = s3_parameters
         self.__arguments = arguments
 
-    def exc(self, str_specifications: list):
+    def exc(self, ec2_pathways: ec2p.EC2Pathways):
         """
+        ['batch', 'specifications.txt']
+        ['batch', 'template.json']
+        ['batch', 'data-base64.txt']
 
         :return:
         """
 
         # Specifications
         __specifications = src.ec2.specifications.Specifications()
-        specifications = __specifications.__call__(strings=str_specifications)
 
         # Data
         __data = src.ec2.data.Data(connector=self.__connector, arguments=self.__arguments)
 
         # Template
         template = src.ec2.template.Template(connector=self.__connector)
-        template.exc(specifications=specifications, data=__data.__call__())
+        template.exc(specifications=__specifications.__call__(ec2_pathways=ec2_pathways),
+                     data=__data.__call__(ec2_pathways=ec2_pathways))
