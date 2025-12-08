@@ -1,4 +1,4 @@
-"""Module register.py"""
+"""Module template.py"""
 import logging
 
 import boto3
