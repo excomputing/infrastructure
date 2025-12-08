@@ -3,7 +3,7 @@ import logging
 
 import boto3
 
-import src.ec2.settings
+import src.ec2.data
 import src.ec2.template
 import src.ec2.specifications
 import src.elements.s3_parameters as s3p
@@ -34,11 +34,13 @@ class Interface:
         :return:
         """
 
+        # Specifications
         __specifications = src.ec2.specifications.Specifications()
         specifications = __specifications.__call__(strings=str_specifications)
 
-        # Data settings
-        __settings = src.ec2.settings.Settings(connector=self.__connector, arguments=self.__arguments)
+        # Data
+        __data = src.ec2.data.Data(connector=self.__connector, arguments=self.__arguments)
 
+        # Template
         template = src.ec2.template.Template(connector=self.__connector)
-        template.exc(specifications=specifications, data=__settings.__call__())
+        template.exc(specifications=specifications, data=__data.__call__())
