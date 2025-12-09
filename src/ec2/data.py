@@ -38,15 +38,15 @@ class Data:
         __settings = src.ec2.settings.Settings(ec2_pathways=ec2_pathways)
 
         __data = __settings.template()
+        __data['UserData'] = __settings.directives()
         __data['IamInstanceProfile'] = {"Arn": self.__assets.get('i-am-instance-profile')}
         __data['KeyName'] = self.__assets.get('key-name')
-        __data['Placement']['AvailabilityZone'] = self.__assets.get('availability-zone')
-        __data['UserData'] = __settings.directives()
+        __data['Placement']['AvailabilityZone'] = self.__assets.get('availability-zones')[0]
 
         parts = []
         for part in __settings.network_interfaces:
             part['Groups'] = self.__assets.get('security-groups')
-            part['SubnetId'] = self.__assets.get('subnet-id')
+            part['SubnetId'] = self.__assets.get('subnets')[0]
             parts.append(part)
 
         __data['NetworkInterfaces'] = parts
