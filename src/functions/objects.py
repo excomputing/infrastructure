@@ -1,6 +1,4 @@
-"""
-Module objects.py
-"""
+"""Module objects.py"""
 import json
 import pathlib
 
@@ -45,7 +43,7 @@ class Objects:
             raise err from err
 
     @staticmethod
-    def api(url: str) -> dict:
+    def api(url: str) -> dict | list[dict]:
         """
 
         :param url: An online data source URL (Uniform Resource Locator)
@@ -58,7 +56,7 @@ class Objects:
         return json.loads(content)
 
     @staticmethod
-    def read(uri: str) -> dict:
+    def read(uri: str) -> dict | list[dict]:
         """
 
         :param uri: A file's URI (Uniform Resource Identifier)
