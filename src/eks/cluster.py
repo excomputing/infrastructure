@@ -4,6 +4,7 @@ import os
 
 import boto3
 import botocore.exceptions
+
 import src.functions.objects
 
 
@@ -25,7 +26,7 @@ class Cluster:
         self.__arguments = arguments
 
     @staticmethod
-    def __get_settings() -> dict:
+    def __get_settings_cluster() -> dict:
         """
         Reference: <a
         href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/eks/client/create_cluster.html">
@@ -35,39 +36,39 @@ class Cluster:
         """
 
         objects = src.functions.objects.Objects()
-        settings = objects.read(uri=os.path.join(os.getcwd(), 'src', 'eks', 'settings.json'))
-        logging.info(settings)
+        settings = objects.read(
+            uri=os.path.join(os.getcwd(), 'src', 'eks', 'cluster.json'))
 
         return settings
 
-    def __call__(self):
+    def __call__(self) -> str:
         """
         cluster, additions
 
         :return:
         """
 
-        self.__get_settings()
+        settings: dict = self.__get_settings_cluster()
 
-        '''
         try:
             specifications: dict = self.__eks_client.create_cluster(
-                name="",
-                version="1.34",
-                roleArn="",
-                resourcesVpcConfig={},
-                kubernetesNetworkConfig={},
-                logging={},
+                name=settings.get('name'),
+                version=settings.get('version'),
+                roleArn=settings.get('roleArn'),
+                resourcesVpcConfig=settings.get('resourcesVpcConfig'),
+                kubernetesNetworkConfig=settings.get('kubernetesNetworkConfig'),
+                logging=settings.get('logging'),
                 tags={"project": self.__arguments.get("project-tag")},
-                upgradePolicy={},
-                zonalShiftConfig={},
-                computeConfig={},
-                storageConfig={},
+                upgradePolicy=settings.get('upgradePolicy'),
+                zonalShiftConfig=settings.get('zonalShiftConfig'),
+                computeConfig=settings.get('computeConfig'),
+                storageConfig=settings.get('storageConfig'),
                 deletionProtection=False,
-                controlPlaneScalingConfig={'tier': 'tier-xl'}
+                controlPlaneScalingConfig=settings.get('controlPlaneScalingConfig')
             )
         except botocore.exceptions.ClientError as err:
             raise err from err
 
         logging.info(specifications)
-        '''
+
+        return settings.get("name")
