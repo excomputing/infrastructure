@@ -30,7 +30,7 @@ class Role:
         # Instances
         self.__objects = src.functions.objects.Objects()
 
-    def __get_policy(self) -> str:
+    def __get_trust_policy(self) -> str:
         """
 
         :return:
@@ -54,7 +54,7 @@ class Role:
             specification: dict = self.__iam_client.create_role(
                 Path='/',
                 RoleName=role_name,
-                AssumeRolePolicyDocument=self.__get_policy(),
+                AssumeRolePolicyDocument=self.__get_trust_policy(),
                 Description='An Elastic Kubernetes Service cluster role.',
                 MaxSessionDuration=max_session_duration,
                 Tags=[
