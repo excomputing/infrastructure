@@ -44,7 +44,7 @@ class Node:
 
     def __set_up(self, role_name: str, policies: list[str]):
         """
-        
+
         :param role_name:
         :param policies:
         :return:
