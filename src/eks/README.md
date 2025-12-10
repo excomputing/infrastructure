@@ -75,6 +75,15 @@ aws eks get-token --cluster-name {cluster.name}
 
 <br>
 
+## `ANTE`
+
+The option whereby AutoMode is disabled.  Notes upcoming.
+
+<br>
+
+
+## `AUTO`
+
 ### custom node class, custom node pool
 
 > [!IMPORTANT]
