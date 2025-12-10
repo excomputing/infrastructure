@@ -47,7 +47,7 @@ class Pod:
         :return:
         """
 
-        role_name = 'AmazonEKSPodIdentityPermissionPolicies'
+        role_name = 'AmazonEKSPodIdentityRole'
 
         # Create baseline role
         try:
@@ -55,7 +55,7 @@ class Pod:
                 Path='/',
                 RoleName=role_name,
                 AssumeRolePolicyDocument=self.__get_policy(),
-                Description='Allows pods running in Amazon EKS cluster to access AWS resources.',
+                Description='EKS Pods Identity Role: Allows pods running in Amazon EKS cluster to access AWS resources.',
                 MaxSessionDuration=max_session_duration,
                 Tags=[
                     {'Key': 'project', 'Value': self.__arguments.get('project_tag')}
