@@ -15,17 +15,19 @@ class Node:
     https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iam/client/create_role.html
     """
 
-    def __init__(self, connector: boto3.session.Session, arguments: dict):
+    def __init__(self, connector: boto3.session.Session, arguments: dict, max_session_duration: int = 10800):
         """
 
         :param connector: A boto3 session instance, it retrieves the developer's <default> Amazon
                           Web Services (AWS) profile details, which allows for programmatic interaction with AWS.
         :param arguments:
+        :param max_session_duration:
         """
 
         self.__connector = connector
         self.__iam_client = self.__connector.client(service_name='iam')
         self.__arguments = arguments
+        self.__max_session_duration = max_session_duration
 
         # Instances
         self.__objects = src.functions.objects.Objects()
@@ -40,14 +42,7 @@ class Node:
 
         return json.dumps(objects)
 
-    def __call__(self, max_session_duration: int = 10800):
-        """
-
-        :param max_session_duration:
-        :return:
-        """
-
-        role_name = 'AmazonEKSAutoNodeRole'
+    def __set_up(self, role_name: str, policies: list[str]):
 
         # Create baseline role
         try:
@@ -56,7 +51,7 @@ class Node:
                 RoleName=role_name,
                 AssumeRolePolicyDocument=self.__get_trust_policy(),
                 Description='Allows EKS nodes to connect to EKS Auto Mode clusters and to pull container images from ECR.',
-                MaxSessionDuration=max_session_duration,
+                MaxSessionDuration=self.__max_session_duration,
                 Tags=[
                     {'Key': 'project', 'Value': self.__arguments.get('project_tag')}
                 ]
@@ -67,14 +62,22 @@ class Node:
         except botocore.exceptions.ClientError as err:
             raise err from err
 
-        logging.info(specification)
-
-        # Attach role policy
-        policies = ['AmazonEC2ContainerRegistryPullOnly', 'AmazonEKSWorkerNodeMinimalPolicy']
-
         for policy in policies:
             message = self.__iam_client.attach_role_policy(
                 RoleName=specification.get('Role').get('RoleName'),
                 PolicyArn=f'arn:aws:iam::aws:policy/{policy}'
             )
             logging.info(message)
+
+    def __call__(self):
+        """
+
+        :return:
+        """
+
+        # Attach roles & policies
+        self.__set_up(role_name = 'AmazonEKSAutoNodeRole',
+                      policies = ['AmazonEC2ContainerRegistryPullOnly', 'AmazonEKSWorkerNodeMinimalPolicy'])
+
+        self.__set_up(role_name='AmazonEKSNodeRole',
+                      policies=['AmazonEKSWorkerNodePolicy', 'AmazonEC2ContainerRegistryReadOnly', 'AmazonEKS_CNI_Policy'])
