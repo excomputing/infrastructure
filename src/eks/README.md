@@ -25,6 +25,9 @@ Setting up
 
 ## `CLUSTER` & `ADDITIONS`
 
+> [!IMPORTANT]
+> [Networking add-ons for Amazon EKS clusters](https://docs.aws.amazon.com/eks/latest/userguide/eks-networking-add-ons.html)
+
 A cluster wherein the [built-in NodePools](https://docs.aws.amazon.com/eks/latest/userguide/set-builtin-node-pools.html) are disabled:
 
 ```shell
