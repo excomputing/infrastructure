@@ -10,7 +10,7 @@ import src.functions.objects
 
 class Additions:
     """
-    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/eks/client/create_cluster.html
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/eks/client/create_addon.html
     """
 
     def __init__(self, connector: boto3.session.Session, cluster_name: str):
