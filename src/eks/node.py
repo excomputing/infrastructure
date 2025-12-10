@@ -30,7 +30,7 @@ class Node:
         # Instances
         self.__objects = src.functions.objects.Objects()
 
-    def __get_policy(self) -> str:
+    def __get_trust_policy(self) -> str:
         """
 
         :return:
@@ -54,7 +54,7 @@ class Node:
             specification: dict = self.__iam_client.create_role(
                 Path='/',
                 RoleName=role_name,
-                AssumeRolePolicyDocument=self.__get_policy(),
+                AssumeRolePolicyDocument=self.__get_trust_policy(),
                 Description='Allows EKS nodes to connect to EKS Auto Mode clusters and to pull container images from ECR.',
                 MaxSessionDuration=max_session_duration,
                 Tags=[
