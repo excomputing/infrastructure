@@ -79,6 +79,9 @@ aws eks get-token --cluster-name {cluster.name}
 
 The option whereby AutoMode is disabled.  Notes upcoming.
 
+
+
+
 <br>
 
 
