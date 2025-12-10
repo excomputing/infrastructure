@@ -79,6 +79,9 @@ aws eks get-token --cluster-name {cluster.name}
 
 The option whereby AutoMode is disabled.  Notes upcoming.
 
+* [create cluster](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html)
+* [EKS Pod Identity](https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html)
+  * [Setting up EKS Pod Identities](https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html)
 
 
 
