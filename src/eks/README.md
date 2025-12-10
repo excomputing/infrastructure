@@ -67,7 +67,7 @@ Inspect, test, via
 kubectl get svc
 ```
 
-The Amazon EKS cluster authentication directive is
+In the case of EKS, an <a href="https://docs.aws.amazon.com/cli/latest/reference/eks/get-token.html" target="_blank">alternative Amazon EKS cluster access authentication approach</a> is via the directive
 
 ```shell
 aws eks get-token --cluster-name {cluster.name}
