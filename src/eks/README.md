@@ -28,6 +28,8 @@ Setting up
 > [!IMPORTANT]
 > [Networking add-ons for Amazon EKS clusters](https://docs.aws.amazon.com/eks/latest/userguide/eks-networking-add-ons.html)
 
+<br>
+
 A cluster wherein the [built-in NodePools](https://docs.aws.amazon.com/eks/latest/userguide/set-builtin-node-pools.html) are disabled:
 
 ```shell
@@ -79,6 +81,8 @@ aws eks get-token --cluster-name {cluster.name}
 > * [Create a Node Class for Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/create-node-class.html), [node classes](https://karpenter.sh/docs/concepts/nodeclasses/)
 > * [Create a Node Pool for EKS Auto Mode](https://docs.aws.amazon.com/eks/latest/userguide/create-node-pool.html)
 
+<br>
+
 Next, the node class & node pool
 
 ```shell
@@ -98,6 +102,8 @@ kubectl get nodepools
 
 > [!IMPORTANT]
 > * [Create node class access entry](https://docs.aws.amazon.com/eks/latest/userguide/create-node-class.html#auto-node-access-entry)
+
+<br>
 
 Refer to src/eks/node.sh
 
