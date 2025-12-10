@@ -19,7 +19,7 @@ def main():
 
     # Elastic Kubernetes Service: Role
     src.eks.interface.Interface(
-        connector=connector, s3_parameters=s3_parameters, arguments=arguments).exc()
+        connector=connector, arguments=arguments).exc()
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
