@@ -77,6 +77,11 @@ aws eks get-token --cluster-name {cluster.name}
 
 ## `ANTE`
 
+> [!IMPORTANT]
+> [Managing Compute Resources](https://docs.aws.amazon.com/eks/latest/userguide/eks-compute.html)
+
+<br>
+
 The option whereby AutoMode is disabled.  Notes upcoming.
 
 * [create cluster](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html)
