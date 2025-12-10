@@ -42,8 +42,10 @@ class Interface:
         src.eks.pod.Pod(
             connector=self.__connector, arguments=self.__arguments).__call__()
 
+        '''
         cluster_name = src.eks.cluster.Cluster(
             connector=self.__connector, arguments=self.__arguments).__call__()
 
         src.eks.additions.Additions(
             connector=self.__connector, cluster_name=cluster_name).__call__()
+        '''
