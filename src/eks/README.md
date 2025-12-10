@@ -3,6 +3,9 @@
 
 > [!TIP]
 > * <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html" target="_target">Amazon Web Services Software Development Kit (Python)</a>
+> * <a href="https://kubernetes.io" target="_blank">kubernetes</a>
+>   * <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/" target="_blank">managing resource containers</a>
+> * <a href="https://karpenter.sh" target="_blank">karpenter.sh</a>
 
 <br>
 
@@ -47,14 +50,19 @@ aws eks describe-addon --cluster-name {cluster.name} --addon-name {add.on.name}
 
 <br>
 
-`kubectl` connects to an Elastic Kubernetes Service (EKS) cluster via a kubeconfig file, which the directive
+`kubectl` connects to an Elastic Kubernetes Service (EKS) cluster via a kubeconfig file, via the directive
 
 ```shell
 aws eks update-kubeconfig --region {region.code} --name {cluster.name}
+```
+
+Inspect, test, via
+
+```shell
 kubectl get svc
 ```
 
-creates; the second directive is a `test` directive.  The Amazon EKS cluster authentication directive is
+The Amazon EKS cluster authentication directive is
 
 ```shell
 aws eks get-token --cluster-name {cluster.name}
@@ -88,9 +96,7 @@ kubectl get nodepools
 > [!IMPORTANT]
 > * [Create node class access entry](https://docs.aws.amazon.com/eks/latest/userguide/create-node-class.html#auto-node-access-entry)
 
-```shell
-bash src/eks/node-class-access.sh {cluster.name} {principal.amazon.resource.name}
-```
+Refer to src/eks/node.sh
 
 <br>
 <br>
