@@ -2,6 +2,7 @@
 
 * [Elastic Kubernetes Service](../src/eks/README.md)
 * [AWS CLI](https://docs.aws.amazon.com/cli/latest/reference/#cli-aws)
+* [Amazon ECS task definitions for GPU workloads](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-gpu.html)
 
 ## Notes
 
