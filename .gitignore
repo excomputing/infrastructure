@@ -212,6 +212,7 @@ interface/**/*.json
 # batch
 src/batch/instructions/*.json
 src/batch/machine/*.json
+src/batch/machine/*.txt
 
 # Script
 script.sh
