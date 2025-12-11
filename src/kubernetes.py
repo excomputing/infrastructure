@@ -17,21 +17,18 @@ def main():
     logger: logging.Logger = logging.getLogger(__name__)
     logger.info('Starting: %s', datetime.datetime.now().isoformat(timespec='microseconds'))
 
-    # Infrastructure
-    src.ecs.interface.Interface(
-        connector=connector, s3_parameters=s3_parameters, arguments=arguments, settings=settings).exc()
-
-    src.machines.interface.Interface(
-        connector=connector, s3_parameters=s3_parameters, arguments=arguments).exc(settings=settings)
+    # Elastic Kubernetes Service: Role
+    src.eks.interface.Interface(
+        connector=connector, arguments=arguments).exc()
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
 
 
+# noinspection DuplicatedCode
 if __name__ == '__main__':
 
     # Paths
-    # noinspection DuplicatedCode
     root = os.getcwd()
     sys.path.append(root)
     sys.path.append(os.path.join(root, 'src'))
@@ -42,11 +39,10 @@ if __name__ == '__main__':
                         datefmt='%Y-%m-%d %H:%M:%S')
 
     # Modules
-    import src.ecs.interface
+    import src.eks.interface
     import src.elements.service as sr
     import src.elements.s3_parameters as s3p
     import src.functions.cache
-    import src.machines.interface
     import src.preface.interface
 
     connector: boto3.session.Session
