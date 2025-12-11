@@ -3,6 +3,7 @@
 
 > [!TIP]
 > * <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html" target="_target">Amazon Web Services Software Development Kit (Python)</a>
+>   * <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/eks.html" target="_blank">elastic kubernetes service: boto3</a>
 > * <a href="https://kubernetes.io" target="_blank">kubernetes</a>
 >   * <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/" target="_blank">managing resource containers</a>
 > * <a href="https://karpenter.sh" target="_blank">karpenter.sh</a>
@@ -89,7 +90,14 @@ The option whereby AutoMode is disabled.  Notes upcoming.
   * [Set up the Amazon EKS Pod Identity Agent](https://docs.aws.amazon.com/eks/latest/userguide/pod-id-agent-setup.html): This occurs during the _cluster_ & _additions_ creation stage.
   * [Assign an IAM role to a Kubernetes service account](https://docs.aws.amazon.com/eks/latest/userguide/pod-id-association.html): The relevant <abbr title="Identity & Access Management">IAM</abbr> role is created during the roles creation stage $Rarr; study [src/eks/interface.py](interface.py).
 
+<br>
 
+A few delete [directives](https://docs.aws.amazon.com/cli/latest/reference/eks/)
+
+```shell
+aws eks delete-nodegroup --cluster-name {cluster.name} --nodegroup-name {node.group.name}
+aws eks delete-cluster --name {cluster.name}
+```
 
 <br>
 
