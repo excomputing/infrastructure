@@ -213,5 +213,6 @@ src/eks/*.txt
 src/eks/*.yaml
 src/eks/additions.json
 src/eks/cluster.json
+src/eks/group.json
 
 script.sh
