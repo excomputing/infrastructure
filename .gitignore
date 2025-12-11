@@ -211,7 +211,6 @@ interface/**/*.json
 
 src/eks/*.txt
 src/eks/*.yaml
-src/eks/*.sh
 src/eks/additions.json
 src/eks/cluster.json
 
