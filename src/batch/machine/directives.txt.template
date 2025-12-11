@@ -1,0 +1,45 @@
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
+
+--==MYBOUNDARY==
+Content-Type: text/x-shellscript; charset="us-ascii"
+
+#!/bin/bash
+
+# update
+sudo yum update -y
+
+# docker
+sudo yum install -y docker
+sudo service docker start
+
+# In order to use docker commands without 'sudo'
+sudo usermod -a -G docker ec2-user
+sudo usermod -a -G docker ubuntu
+
+# time
+echo '"ZONE=\"GMT\""' > /etc/sysconfig/clock
+ln -sf /usr/share/zoneinfo/GMT /etc/localtime
+
+# agent
+curl -O https://s3.{region.code}.amazonaws.com/amazon-ecs-agent-eu-west-1/amazon-ecs-init-latest.x86_64.rpm
+sudo yum localinstall -y amazon-ecs-init-latest.x86_64.rpm
+echo -e "\n" | sudo tee -a /lib/systemd/system/ecs.service
+echo After=cloud-final.service | sudo tee -a /lib/systemd/system/ecs.service
+
+# ecs config
+echo ECS_BACKEND_HOST=https://ecs.{region.code}.amazonaws.com | sudo tee -a /etc/ecs/ecs.config
+echo ECS_ENABLE_GPU_SUPPORT=true | sudo tee -a /etc/ecs/ecs.config
+
+echo ECS_DISABLE_IMAGE_CLEANUP=false | sudo tee -a /etc/ecs/ecs.config
+echo ECS_ENGINE_TASK_CLEANUP_WAIT_DURATION=2m | sudo tee -a /etc/ecs/ecs.config
+echo ECS_IMAGE_CLEANUP_INTERVAL=10m | sudo tee -a /etc/ecs/ecs.config
+echo ECS_IMAGE_MINIMUM_CLEANUP_AGE=120m | sudo tee -a /etc/ecs/ecs.config
+
+# ecs service: sudo service ecs start
+sudo systemctl start ecs
+
+# ipv4
+echo "ip_resolve=4" >> /etc/yum.conf
+
+--==MYBOUNDARY==--
