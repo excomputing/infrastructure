@@ -18,7 +18,6 @@ kubectl version --client
 
 Option:
   snap install kubectl --classic
-
 comment
 
 
