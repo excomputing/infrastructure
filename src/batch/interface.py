@@ -1,4 +1,7 @@
 
+import subprocess
+import logging
+
 import boto3
 
 import src.ec2.interface
@@ -29,6 +32,14 @@ class Interface:
         :return:
         """
 
+        try:
+            page: subprocess.CompletedProcess[bytes] = subprocess.run(
+                ["src/batch/machine/directives-base64.sh"], shell=True, check=True)
+            logging.info(page.returncode)
+        except Exception as err:
+            raise err from err
+
+        '''
         ec2_pathways = ec2p.EC2Pathways(
             specifications=['batch', 'machine', 'specifications.json'],
             template=['batch', 'machine', 'template.json'],
@@ -37,3 +48,4 @@ class Interface:
         src.ec2.interface.Interface(
             connector=self.__connector, s3_parameters=self.__s3_parameters, arguments=self.__arguments).exc(
             ec2_pathways=ec2_pathways)
+        '''
