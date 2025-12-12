@@ -7,7 +7,10 @@ import botocore.exceptions
 
 class Template:
     """
-    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/create_launch_template.html#
+    <a
+    href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/create_launch_template.html#">
+    create_launch_template</a>, <a href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/errors-overview.html">
+    error exceptions</a>
     """
 
     def __init__(self, connector: boto3.session.Session):
@@ -37,7 +40,7 @@ class Template:
                 TagSpecifications=specifications.get('TagSpecifications')
             )
             logging.info(message)
-        except self.__ec2_client.exceptions.InvalidLaunchTemplateName.AlreadyExistsException as err:
+        except self.__ec2_client.exceptions.InvalidLaunchTemplateName.AlreadyExistsException:
             logging.info('%s exists', specifications.get('LaunchTemplateName'))
         except botocore.exceptions.ClientError as err:
             raise err from err
