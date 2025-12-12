@@ -1,15 +1,18 @@
-
-import subprocess
+"""Module interface.py"""
 import logging
+import subprocess
 
 import boto3
 
 import src.ec2.interface
-import src.elements.s3_parameters as s3p
 import src.elements.ec2_pathways as ec2p
+import src.elements.s3_parameters as s3p
 
 
 class Interface:
+    """
+    Interface
+    """
 
     def __init__(self, connector: boto3.session.Session, s3_parameters: s3p.S3Parameters, arguments: dict):
         """
