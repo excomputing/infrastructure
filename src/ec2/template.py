@@ -2,6 +2,7 @@
 import logging
 
 import boto3
+import botocore.exceptions
 
 
 class Template:
@@ -21,17 +22,22 @@ class Template:
 
     def exc(self, specifications: dict, data: dict):
         """
+        Later: If the template exists, create a new version.
 
         :param specifications:
         :param data:
         :return:
         """
 
-        message = self.__ec2_client.create_launch_template(
-            LaunchTemplateName=specifications.get('LaunchTemplateName'),
-            VersionDescription=specifications.get('VersionDescription'),
-            LaunchTemplateData=data,
-            TagSpecifications=specifications.get('TagSpecifications')
-        )
-
-        logging.info(message)
+        try:
+            message = self.__ec2_client.create_launch_template(
+                LaunchTemplateName=specifications.get('LaunchTemplateName'),
+                VersionDescription=specifications.get('VersionDescription'),
+                LaunchTemplateData=data,
+                TagSpecifications=specifications.get('TagSpecifications')
+            )
+            logging.info(message)
+        except self.__ec2_client.exceptions.InvalidLaunchTemplateName.AlreadyExistsException as err:
+            logging.info('%s exists', specifications.get('LaunchTemplateName'))
+        except botocore.exceptions.ClientError as err:
+            raise err from err
